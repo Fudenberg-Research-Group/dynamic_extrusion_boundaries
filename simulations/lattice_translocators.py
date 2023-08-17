@@ -8,8 +8,8 @@ class LEFTranslocator():
         birthArray[len(birthArray)-1] = 0
         
         birthArray[stallProbLeft > 0.9] = 0        
-        birthArray[stallProbRight > 0.9] = 0        
-        
+        birthArray[stallProbRight > 0.9] = 0         
+            
         self.numSite = len(birthArray)
         self.numLEF = numLEF
         self.stallLeft = stallProbLeft
