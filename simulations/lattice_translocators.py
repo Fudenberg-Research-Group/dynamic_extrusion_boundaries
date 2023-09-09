@@ -3,39 +3,48 @@ import numpy as np
 
 class LEFTranslocator():
     
-    def __init__(self, birthArray, deathProb, stallProbLeft, stallProbRight, pauseProb, stallFalloffProb,  numLEF):
-        birthArray[0] = 0
-        birthArray[len(birthArray)-1] = 0
-        
-        birthArray[stallProbLeft > 0.9] = 0        
-        birthArray[stallProbRight > 0.9] = 0         
-            
+    def __init__(self,
+                 numLEF,
+                 deathProb,
+                 stalledDeathProb,
+                 birthArray,
+                 pauseProb,
+                 stallProbLeft,
+                 stallProbRight,
+                 *args):
+    
         self.numSite = len(birthArray)
         self.numLEF = numLEF
-        self.stallLeft = stallProbLeft
-        self.stallRight = stallProbRight
-        self.falloff = deathProb
+        
+        self.stallProbLeft = stallProbLeft
+        self.stallProbRight = stallProbRight
+        
+        self.deathProb = deathProb
         self.pause = pauseProb
+        
+        birthArray[0] = 0
+        birthArray[-1] = 0
+        
         self.birthProb = np.cumsum(birthArray, dtype=np.double)
         self.birthProb /= self.birthProb[-1]
-        self.LEFs1 = np.zeros((self.numLEF), int)
-        self.LEFs2 = np.zeros((self.numLEF), int)
-        self.stalled1 = np.zeros(self.numLEF, int)
-        self.stalled2 = np.zeros(self.numLEF, int)
+        
+        self.LEFs = np.zeros((self.numLEF, 2), int)
+        self.stalled = np.zeros((self.numLEF, 2), int)
+        
         self.occupied = np.zeros(self.numSite, int)
-        self.stallFalloff = stallFalloffProb
+        self.stalledDeathProb = stalledDeathProb
+        
         self.occupied[0] = 1
-        self.occupied[self.numSite - 1] = 1
+        self.occupied[-1] = 1
 
-        for ind in range(self.numLEF):
-            self.birth(ind)
+        for i in range(self.numLEF):
+            self.LEF_birth(i)
 
 
-    def birth(self, ind):
+    def LEF_birth(self, i):
     
         while True:
-        
-            pos = self.getStartSite()
+            pos = np.searchsorted(self.birthProb, np.random.random())
             
             if pos >= self.numSite - 1:
                 print("bad value", pos, self.birthProb[len(self.birthProb)-1])
@@ -48,151 +57,148 @@ class LEFTranslocator():
             if self.occupied[pos] == 1:
                 continue
             
-            self.LEFs1[ind] = pos
-            self.LEFs2[ind] = pos
-            
+            self.LEFs[i] = pos
             self.occupied[pos] = 1
             
             if (pos < (self.numSite - 3)) and (self.occupied[pos+1] == 0):
                 if np.random.random() > 0.5:
-                    self.LEFs2[ind] = pos + 1
+                    self.LEFs[i, 1] = pos + 1
                     self.occupied[pos+1] = 1
             
             return
 
 
-    def death(self):
+    def LEF_death(self):
     
         for i in range(self.numLEF):
-        
-            if self.stalled1[i] == 0:
-                falloff1 = self.falloff[self.LEFs1[i]]
+            if self.stalled[i, 0] == 0:
+                deathProb1 = self.deathProb[self.LEFs[i, 0]]
             else: 
-                falloff1 = self.stallFalloff[self.LEFs1[i]]
+                deathProb1 = self.stalledDeathProb[self.LEFs[i, 0]]
                 
-            if self.stalled2[i] == 0:
-                falloff2 = self.falloff[self.LEFs2[i]]
+            if self.stalled[i, 1] == 0:
+                deathProb2 = self.deathProb[self.LEFs[i, 1]]
             else:
-                falloff2 = self.stallFalloff[self.LEFs2[i]]              
+                deathProb2 = self.stalledDeathProb[self.LEFs[i, 1]]
             
-            falloff = max(falloff1, falloff2)
+            deathProb = max(deathProb1, deathProb2)
             
-            if np.random.random() < falloff:
-                self.occupied[self.LEFs1[i]] = 0
-                self.occupied[self.LEFs2[i]] = 0
+            if np.random.random() < deathProb:
+                self.occupied[self.LEFs[i, 0]] = 0
+                self.occupied[self.LEFs[i, 1]] = 0
                 
-                self.stalled1[i] = 0
-                self.stalled2[i] = 0
-                
-                self.birth(i)
-    
-    
-    def getStartSite(self):
-    
-        startSite = np.searchsorted(self.birthProb, np.random.random())
-        
-        return startSite
+                self.stalled[i] = 0
+                self.LEF_birth(i)
         
 
-    def step(self):
+    def LEF_step(self):
+    
         for i in range(self.numLEF):            
-            stall1 = self.stallLeft[self.LEFs1[i]]
-            stall2 = self.stallRight[self.LEFs2[i]]
+            stall1 = self.stallProbLeft[self.LEFs[i, 0]]
+            stall2 = self.stallProbRight[self.LEFs[i, 1]]
                                     
             if np.random.random() < stall1:
-                self.stalled1[i] = 1
+                self.stalled[i, 0] = 1
                 
             if np.random.random() < stall2:
-                self.stalled2[i] = 1
+                self.stalled[i, 1] = 1
                          
-            cur1 = self.LEFs1[i]
-            cur2 = self.LEFs2[i]
+            cur1, cur2 = self.LEFs[i]
             
-            if self.stalled1[i] == 0: 
+            if self.stalled[i, 0] == 0:
                 if self.occupied[cur1-1] == 0:
-                    pause1 = self.pause[self.LEFs1[i]]
+                    pause1 = self.pause[cur1]
                     
                     if np.random.random() > pause1:
                         self.occupied[cur1 - 1] = 1
                         self.occupied[cur1] = 0
                         
-                        self.LEFs1[i] = cur1 - 1
+                        self.LEFs[i, 0] = cur1 - 1
                         
-            if self.stalled2[i] == 0:                
+            if self.stalled[i, 1] == 0:
                 if self.occupied[cur2 + 1] == 0:                    
-                    pause2 = self.pause[self.LEFs2[i]]
+                    pause2 = self.pause[cur2]
                     
                     if np.random.random() > pause2:
                         self.occupied[cur2 + 1] = 1
                         self.occupied[cur2] = 0
                         
-                        self.LEFs2[i] = cur2 + 1
+                        self.LEFs[i, 1] = cur2 + 1
         
         
-    def steps(self,N):
-        for i in range(N):
-            self.death()
-            self.step()
-            
-    def getOccupied(self):
-        return np.array(self.occupied)
+    def step(self):
+        self.LEF_death()
+        self.LEF_step()
+        
     
-    def getLEFs(self):
-        return np.array(self.LEFs1), np.array(self.LEFs2)
-        
-    def updateMap(self, cmap):
-        cmap[self.LEFs1, self.LEFs2] += 1
-        cmap[self.LEFs2, self.LEFs1] += 1
-
-    def updatePos(self, pos, ind):
-        pos[ind, self.LEFs1] = 1
-        pos[ind, self.LEFs2] = 1
+    def steps(self, N):
+        for _ in range(N):
+            self.step()
 
         
 class LEFTranslocatorDynamicBoundary(LEFTranslocator):
      
-    def __init__(self, birthArray, deathProb, stallProbLeft, stallProbRight, pauseProb, stallFalloffProb,  ctcfLifetime, ctcfUnboundTime, numLEF):
-        self.stallLeft_init = np.copy(stallProbLeft)
-        self.stallRight_init = np.copy(stallProbRight)        
-        self.ctcfUnboundingRate = 1./ctcfLifetime if ctcfLifetime>0 else 0
-        self.ctcfBoundingRate = 1./ctcfUnboundTime if ctcfUnboundTime>0 else 0
+    def __init__(self,
+                 numLEF,
+                 deathProb,
+                 stalledDeathProb,
+                 birthArray,
+                 pauseProb,
+                 stallProbLeft,
+                 stallProbRight,
+                 ctcfDeathProb,
+                 ctcfBirthProb,
+                 *args):
+            
+        self.ctcfDeathProb = ctcfDeathProb
+        self.ctcfBirthProb = ctcfBirthProb
 
-        super().__init__(birthArray, deathProb, stallProbLeft, stallProbRight, pauseProb, stallFalloffProb,  numLEF)
+        self.stallProbLeft_init = np.copy(stallProbLeft)
+        self.stallProbRight_init = np.copy(stallProbRight)
 
-    def death_ctcf(self):     
+        super().__init__(numLEF,
+                         deathProb,
+                         stalledDeathProb,
+                         birthArray,
+                         pauseProb,
+                         stallProbLeft,
+                         stallProbRight)
+
+
+    def ctcf_death(self):
+    
         for i in range(self.numSite):
-            if self.stallLeft[i] != 0:
-                if np.random.random() < self.ctcfUnboundingRate:
-                    self.stallLeft[i] = 0.0
-                    for j in range(self.numLEF):
-                        if i==self.LEFs1[j]:
-                            self.stalled1[j] = 0
+            if self.stallProbLeft[i] != 0:
+                if np.random.random() < self.ctcfDeathProb[i]:
+                    self.stallProbLeft[i] = 0
                     
-            if self.stallRight[i]!=0:
-                if np.random.random() < self.ctcfUnboundingRate:
-                    self.stallRight[i]=0
                     for j in range(self.numLEF):
-                        if i==self.LEFs2[j]:
-                            self.stalled2[j] = 0
+                        if i == self.LEFs[j, 0]:
+                            self.stalled[j, 0] = 0
+                    
+            if self.stallProbRight[i] != 0:
+                if np.random.random() < self.ctcfDeathProb[i]:
+                    self.stallProbRight[i] = 0
+                    
+                    for j in range(self.numLEF):
+                        if i == self.LEFs[j, 1]:
+                            self.stalled[j, 1] = 0
                           
 
-    def birth_ctcf(self):        
+    def ctcf_birth(self):
+    
         for i in range(self.numSite):
-            if self.stallLeft[i] != self.stallLeft_init[i]:
-                if np.random.random() < self.ctcfBoundingRate:
-                    self.stallLeft[i] = self.stallLeft_init[i]
-            if self.stallRight[i] != self.stallRight_init[i]:
-                if np.random.random() < self.ctcfBoundingRate:
-                    self.stallRight[i] = self.stallRight_init[i]
+            if self.stallProbLeft[i] != self.stallProbLeft_init[i]:
+                if np.random.random() < self.ctcfBirthProb[i]:
+                    self.stallProbLeft[i] = self.stallProbLeft_init[i]
+                    
+            if self.stallProbRight[i] != self.stallProbRight_init[i]:
+                if np.random.random() < self.ctcfBirthProb[i]:
+                    self.stallProbRight[i] = self.stallProbRight_init[i]
                         
                                 
-    def steps(self, N):
-        for i in range(N):
-            self.death_ctcf()
-            self.birth_ctcf()
-            
-            self.death()
-            self.step()
-            
+    def step(self):
+        self.ctcf_death()
+        self.ctcf_birth()
         
-        
+        super().step()
