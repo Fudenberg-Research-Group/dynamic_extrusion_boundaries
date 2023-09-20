@@ -1,0 +1,32 @@
+#!/bin/bash
+#SBATCH --account=fudenber_735
+#SBATCH --partition=epyc-64 
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=8GB
+#SBATCH --time=7:59:00
+#SBATCH --array=1
+
+export TMPDIR=/scratch1/rahmanin/
+export MYTMP=`mktemp -d -t`
+
+readarray tasks < /home1/rahmanin/start/polychrom/projects/Dynamic_boundary_elements/simulations/2023-09-19_runfile.txt
+task=${tasks[$SLURM_ARRAY_TASK_ID]}
+echo $task
+
+
+eval "$(conda shell.bash hook)"
+conda activate openwpoly
+
+python /home1/rahmanin/start/polychrom/projects/Dynamic_boundary_elements/simulations/simulation_for_1d.py ${MYTMP}/${task}
+
+
+
+
+
+
+
+
+
+
+
