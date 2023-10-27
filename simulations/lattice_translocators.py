@@ -221,4 +221,3 @@ class LEFTranslocatorDynamicBoundary(LEFTranslocator):
         self.update_ctcf_states()
 
         super().step()
-
