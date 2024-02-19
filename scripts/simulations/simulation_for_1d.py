@@ -102,21 +102,54 @@ translocator = funcs.make_translocator(LEFTranslocatorDynamicBoundary,
                                  CTCF_right_positions, 
                                  **paramdict)
 
-with h5py.File(folder+"/LEFPositions.h5", mode='w') as myfile:
+with h5py.File(folder+"/LEFPositions.h5", mode = 'w') as myfile:
+    # creating data set for LEF positions
     dset = myfile.create_dataset("positions", 
-                                 shape=(trajectory_length, LEFNum, 2), #edited
-                                 dtype=np.int32, 
-                                 compression="gzip")
-    
+                                 shape = (trajectory_length, LEFNum, 2), #edited
+                                 dtype = np.int32, 
+                                 compression = "gzip")
+
+    # creating data sets for boundary elements possible sites
+    dset_possible_right = myfile.create_dataset("possible_CTCF_right",
+                                                 shape = (len(ctcfrightlist)), compression = "gzip")
+    dset_possible_right[:] = ctcfrightlist[:]
+    dset_possible_left = myfile.create_dataset("possible_CTCF_left",
+                                                shape = len(ctcfleftlist), compression="gzip")
+    dset_possible_left[:]=ctcfleftlist[:]
+
+    # creating data sets for boundary elements positions
+    dset_pos_right = myfile.create_dataset("CTCF_positions_right",
+                                      shape = (trajectory_length, len(ctcfrightlist), 1), 
+                                     dtype = np.bool, 
+                                     compression = "gzip")
+    dset_pos_left = myfile.create_dataset("CTCF_positions_left",
+                                      shape = (trajectory_length, len(ctcfleftlist), 1), 
+                                     dtype = np.bool, 
+                                     compression = "gzip")
+
     translocator.steps(0)
     
     for st, end in zip(bins[:-1], bins[1:]):
         cur = []
+        ctcf_right_cur = []
+        ctcf_left_cur = []
         for i in range(st, end):
             translocator.step()        
+
             cur.append(translocator.LEFs.copy())
+
+            ctcfrightpos = (translocator.stallProbRight)[ctcfrightlist]*1
+            ctcfleftpos = (translocator.stallProbLeft)[ctcfleftlist]*1
+            ctcf_right_cur.append((ctcfrightpos).reshape(len(ctcfrightpos),1))
+            ctcf_left_cur.append(ctcfleftpos.reshape(len(ctcfleftpos),1))
+
         cur = np.array(cur)
+        ctcf_right_cur = np.array(ctcf_right_cur)
+        ctcf_left_cur = np.array(ctcf_left_cur)
         dset[st:end] = cur
+        dset_pos_right[st:end] = ctcf_right_cur
+        dset_pos_left[st:end] = ctcf_left_cur
+
     myfile.attrs["N"] = N * paramdict['sites_per_monomer']
     myfile.attrs["LEFNum"] = LEFNum
 
