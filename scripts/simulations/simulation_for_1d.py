@@ -104,25 +104,25 @@ translocator = funcs.make_translocator(LEFTranslocatorDynamicBoundary,
 
 with h5py.File(folder+"/LEFPositions.h5", mode = 'w') as myfile:
     # creating data set for LEF positions
-    dset = myfile.create_dataset("positions", 
+    dset_loop_positions = myfile.create_dataset("positions", 
                                  shape = (trajectory_length, LEFNum, 2), #edited
                                  dtype = np.int32, 
                                  compression = "gzip")
 
     # creating data sets for boundary elements possible sites
-    dset_possible_right = myfile.create_dataset("possible_CTCF_right",
+    dset_ctcf_possible_right = myfile.create_dataset("possible_CTCF_right",
                                                  shape = (len(ctcfrightlist)), compression = "gzip")
-    dset_possible_right[:] = ctcfrightlist[:]
-    dset_possible_left = myfile.create_dataset("possible_CTCF_left",
+    dset_ctcf_possible_right[:] = ctcfrightlist[:]
+    dset_ctcf_possible_left = myfile.create_dataset("possible_CTCF_left",
                                                 shape = len(ctcfleftlist), compression="gzip")
-    dset_possible_left[:]=ctcfleftlist[:]
+    dset_ctcf_possible_left[:]=ctcfleftlist[:]
 
     # creating data sets for boundary elements positions
-    dset_pos_right = myfile.create_dataset("CTCF_positions_right",
+    dset_ctcf_positions_right = myfile.create_dataset("CTCF_positions_right",
                                       shape = (trajectory_length, len(ctcfrightlist), 1), 
                                      dtype = np.bool, 
                                      compression = "gzip")
-    dset_pos_left = myfile.create_dataset("CTCF_positions_left",
+    dset_ctcf_positions_left = myfile.create_dataset("CTCF_positions_left",
                                       shape = (trajectory_length, len(ctcfleftlist), 1), 
                                      dtype = np.bool, 
                                      compression = "gzip")
@@ -146,9 +146,9 @@ with h5py.File(folder+"/LEFPositions.h5", mode = 'w') as myfile:
         cur = np.array(cur)
         ctcf_right_cur = np.array(ctcf_right_cur)
         ctcf_left_cur = np.array(ctcf_left_cur)
-        dset[st:end] = cur
-        dset_pos_right[st:end] = ctcf_right_cur
-        dset_pos_left[st:end] = ctcf_left_cur
+        dset_loop_positions[st:end] = cur
+        dset_ctcf_positions_right[st:end] = ctcf_right_cur
+        dset_ctcf_positions_left[st:end] = ctcf_left_cur
 
     myfile.attrs["N"] = N * paramdict['sites_per_monomer']
     myfile.attrs["LEFNum"] = LEFNum
