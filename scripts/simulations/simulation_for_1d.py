@@ -74,14 +74,8 @@ monomer_types = np.zeros(monomers_per_replica, dtype=int)
 site_types = np.repeat(monomer_types, sites_per_monomer)
 
 # Create some CTCF boundary sites
-#make a random config
-#TAD_size = 50 # in monomers
-#CTCF_left_positions = np.arange(0, sites_per_replica, TAD_size * sites_per_monomer)
-#CTCF_right_positions = np.arange(1, sites_per_replica, TAD_size * sites_per_monomer)
-ctcfrightlist = [284, 302, 867, 1005, 2185, 2526, 3760, 3945, 4530, 4986, 5570, 6041, 6183, 6621, 6752, 8084, 9752]
-ctcfleftlist = [557, 2130, 2608, 2608, 2787, 2899, 3259, 3327, 3641, 3646, 4300, 4518, 5172, 5783, 7112, 7940, 8905]
-CTCF_right_positions = np.array(ctcfrightlist)
-CTCF_left_positions = np.array(ctcfleftlist)
+CTCF_sites_right = np.array([284, 302, 867, 1005, 2185, 2526, 3760, 3945, 4530, 4986, 5570, 6041, 6183, 6621, 6752, 8084, 9752])
+CTCF_sites_left = np.array([557, 2130, 2608, 2608, 2787, 2899, 3259, 3327, 3641, 3646, 4300, 4518, 5172, 5783, 7112, 7940, 8905])
 
 ########### 1d simulation parameters for lattice ###########
 Trajn = 100 # trajectory length in monomer 
@@ -98,8 +92,8 @@ LEFNum = N // paramdict['LEF_separation']
 
 translocator = funcs.make_translocator(LEFTranslocatorDynamicBoundary, 
                                  site_types,
-                                 CTCF_left_positions,
-                                 CTCF_right_positions, 
+                                 CTCF_sites_left,
+                                 CTCF_sites_right, 
                                  **paramdict)
 
 with h5py.File(folder+"/LEFPositions.h5", mode = 'w') as myfile:
@@ -110,43 +104,49 @@ with h5py.File(folder+"/LEFPositions.h5", mode = 'w') as myfile:
                                  compression = "gzip")
 
     # creating data sets for boundary elements possible sites
-    dset_ctcf_possible_right = myfile.create_dataset("possible_CTCF_right",
-                                                 shape = (len(ctcfrightlist)), compression = "gzip")
-    dset_ctcf_possible_right[:] = ctcfrightlist[:]
-    dset_ctcf_possible_left = myfile.create_dataset("possible_CTCF_left",
-                                                shape = len(ctcfleftlist), compression="gzip")
-    dset_ctcf_possible_left[:]=ctcfleftlist[:]
+    dset_ctcf_sites_right = myfile.create_dataset("CTCF_sites_right",
+                                                 shape = (len(CTCF_sites_right)), 
+                                                 compression = "gzip", 
+                                                 data=CTCF_sites_right.copy())
+
+
+    dset_ctcf_sites_left = myfile.create_dataset("CTCF_sites_left",
+                                                shape = len(CTCF_sites_left), 
+                                                compression="gzip",
+                                                data=CTCF_sites_left.copy())
 
     # creating data sets for boundary elements positions
     dset_ctcf_positions_right = myfile.create_dataset("CTCF_positions_right",
-                                      shape = (trajectory_length, len(ctcfrightlist), 1), 
+                                      shape = (trajectory_length, len(CTCF_sites_right), 1), 
                                      dtype = np.bool, 
                                      compression = "gzip")
     dset_ctcf_positions_left = myfile.create_dataset("CTCF_positions_left",
-                                      shape = (trajectory_length, len(ctcfleftlist), 1), 
+                                     shape = (trajectory_length, len(CTCF_sites_left), 1), 
                                      dtype = np.bool, 
                                      compression = "gzip")
 
     translocator.steps(0)
     
     for st, end in zip(bins[:-1], bins[1:]):
-        cur = []
-        ctcf_right_cur = []
+        loop_positions = []
+        ctcf_right_cur= []
         ctcf_left_cur = []
         for i in range(st, end):
             translocator.step()        
 
-            cur.append(translocator.LEFs.copy())
+            loop_positions.append(translocator.LEFs.copy())
 
-            ctcfrightpos = (translocator.stallProbRight)[ctcfrightlist]*1
-            ctcfleftpos = (translocator.stallProbLeft)[ctcfleftlist]*1
-            ctcf_right_cur.append((ctcfrightpos).reshape(len(ctcfrightpos),1))
-            ctcf_left_cur.append(ctcfleftpos.reshape(len(ctcfleftpos),1))
+            ctcf_positions_right = (translocator.stallProbRight)[CTCF_sites_right]*1
+            ctcf_positions_left = (translocator.stallProbLeft)[CTCF_sites_left]*1
+            ctcf_right_cur.append(ctcf_positions_right.reshape(len(ctcf_positions_right),1))
+            ctcf_left_cur.append(ctcf_positions_left.reshape(len(ctcf_positions_left),1))
 
-        cur = np.array(cur)
+        loop_positions = np.array(loop_positions)
         ctcf_right_cur = np.array(ctcf_right_cur)
         ctcf_left_cur = np.array(ctcf_left_cur)
-        dset_loop_positions[st:end] = cur
+        
+        dset_loop_positions[st:end] = loop_positions
+
         dset_ctcf_positions_right[st:end] = ctcf_right_cur
         dset_ctcf_positions_left[st:end] = ctcf_left_cur
 
