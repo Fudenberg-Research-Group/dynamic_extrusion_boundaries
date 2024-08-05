@@ -10,7 +10,8 @@ This GitHub repository contains tools for simulating chromatin loop extrusion us
 - Openmm: A library for molecular simulations. (https://github.com/openmm/openmm)
 ### Installation
  '''
- pip install polychrom openmm
+ pip install polychrom \\
+ pip install openmm
  '''
 
 ### usage
