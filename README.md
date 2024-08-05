@@ -1,21 +1,43 @@
 # loop extrusion with dynamic boundaries
 
 ### description
-This github page is designed for polymer simulation of chromatin loop extrusion by Cohesin with dynamic model of CTCF.
+This GitHub repository contains tools for simulating chromatin loop extrusion using a dynamic model of CTCF to better understand how binding of CTCF contributes to chromatin organization and regulation.
 
 
 ### requirement
 - Python
-- Polychrom (https://github.com/open2c/polychrom)
-- Openmm (https://github.com/openmm/openmm)
-
+- Polychrom: A toolkit for polymer simulations. (https://github.com/open2c/polychrom)
+- Openmm: A library for molecular simulations. (https://github.com/openmm/openmm)
+### Installation
+ '''
+ pip install polychrom openmm
+ '''
 
 ### usage
 #### running simulaitons 
-loops are implemented as bonds between monomers, which can be updated to connect more distal monomers, indicating chromatin loop extrusion. To indicate the monomers involve in the loop, first pairs of monomer indeces is determined by performing simulations on a one-dimensional lattice, which provide 'bonds' input data for coarse-grained molecular dynamic simulations. The one dimensional simulation is a python based code in 'script/simulations'. The parameters of loop extrusion, including the lifetime, velocity, and density of extruders (Cohesins), as well as MD parameters, can be modified in ... file. 
+1. One-Dimensional Lattice Simulation:
+Before running the full molecular dynamics simulations, implement loops on a one-dimensional lattice to determine pairs of monomer indices involved in loop extrusion. This step helps define the harmonic 'bonds' input data for the coarse-grained molecular dynamics simulations. Parameters such as the lifetime, velocity, and density of extruders (Cohesins) can be adjusted in the configuration file located at config/simulation_params.py. You can find the Python script for this simulation in the script/simulations directory.
+
+2. Run the coarse-grained molecular dynamics simulations to model loop extrusion. 
+
 #### processing simulation data
-The trajectory data from 1d or md simulations can be processed to provide virtual chip-seq or contact maps. The python codes for these process is provided in 'script/processing'. 
+After running the simulations, process the resulting trajectory data to generate virtual ChIP-seq data or contact maps. The scripts for data processing are available in the script/processing directory.
+##### example 
+To generate contact maps: 
+'''
+python script/processing/process_data.py
+'''
+
 #### analysis
-From processed data, the analysis for quantifying features such as FRiP, TADs, peaks, and vermicelli is provided at 'analysis' as jupyter notebooks.  
+Once the data is processed, perform various analyses to quantify features such as:
+
+- FRiP (Fraction of Reads in Peaks)
+- TADs (Topologically Associating Domains)
+- Dots
+-Vermicelli: Analysis of accumulation of extruders on axial structures.
+The analysis scripts are provided as Jupyter notebooks in the analysis directory.
+Each notebook includes detailed instructions and examples to guide you through the analysis process.
+
+
 
 
