@@ -14,6 +14,7 @@ The structure of this repository follows as below:
 - Python\Python libraries
 - Polychrom: A toolkit for polymer simulations. (https://github.com/open2c/polychrom)
 - Openmm: A library for molecular simulations. (https://github.com/openmm/openmm)
+- Open2c analysis packages. (https://github.com/open2c)
 
 
 ### usage
