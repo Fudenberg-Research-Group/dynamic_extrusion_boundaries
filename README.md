@@ -3,7 +3,13 @@
 ### description
 This GitHub repository contains tools for simulating chromatin loop extrusion using a dynamic model of CTCF to better understand how binding of CTCF contributes to chromatin organization and regulation.
 
-
+### structure of the repository
+The structure of this repository follows as below:
+- inputs : this contains simulations and experimental data.
+- output : this contain files after processing and analyzing the input data.
+- analysis: this contains the notebooks and codes for analyzing simulations and experimenal data.
+- script: this contains files required for performing simulations.
+  
 ### requirement
 - Python
 - Polychrom: A toolkit for polymer simulations. (https://github.com/open2c/polychrom)
