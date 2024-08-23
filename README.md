@@ -11,7 +11,7 @@ The structure of this repository follows as below:
 - script: this contains files required for performing simulations.
   
 ### requirement
-- Python
+- Python\Python libraries
 - Polychrom: A toolkit for polymer simulations. (https://github.com/open2c/polychrom)
 - Openmm: A library for molecular simulations. (https://github.com/openmm/openmm)
 
@@ -24,7 +24,7 @@ Before running the full molecular dynamics simulations, implement loops on a one
 2. Run the coarse-grained molecular dynamics simulations to model loop extrusion. 
 
 #### processing simulation data
-After running the simulations, process the resulting trajectory data to generate virtual ChIP-seq data or contact maps. The scripts for data processing are available in the script/processing directory.
+After running the simulations, process the simulated trajectory data to generate virtual ChIP-seq profiles, contact maps, and images. The scripts for data processing are available in the script/processing directory.
 ##### example 
 To generate contact maps: 
 '''
@@ -32,12 +32,13 @@ python script/processing/process_data.py
 '''
 
 #### analysis
-Once the data is processed, perform various analyses to quantify features such as:
+Once the data is processed, perform analyses to quantify observable features such as:
 
 - FRiP (Fraction of Reads in Peaks)
 - TADs (Topologically Associating Domains)
-- Dots
--Vermicelli: Analysis of accumulation of extruders on axial structures.
+- Dots (loops between barriers)
+- Vermicelli: Analysis of accumulation of extruders on axial structures.
+  
 The analysis scripts are provided as Jupyter notebooks in the analysis directory.
 Each notebook includes detailed instructions and examples to guide you through the analysis process.
 
