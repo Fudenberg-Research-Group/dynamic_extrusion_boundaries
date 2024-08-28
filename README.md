@@ -21,7 +21,7 @@ The structure of this repository follows as below:
 ### usage
 #### running simulaitons 
 1. One-Dimensional Lattice Simulation:
-Before running the full molecular dynamics simulations, implement loops on a one-dimensional lattice to determine pairs of monomer indices involved in loop extrusion. This step helps define the harmonic 'bonds' input data for the coarse-grained molecular dynamics simulations. Parameters such as the lifetime, velocity, and density of extruders (Cohesins) can be adjusted in the configuration file located at config/simulation_params.py. You can find the Python script for this simulation in the script/simulations directory.
+Before running the full molecular dynamics simulations, implement loops on a one-dimensional lattice to determine pairs of monomer indices involved in loop extrusion. This step helps define the harmonic 'bonds' input data for the coarse-grained molecular dynamics simulations. Parameters such as the lifetime, velocity, and density of extruders (Cohesins) can be adjusted in the configuration file located at script/simulations/config/simulation_params.py. For CTCF barriers, you can determine dynamic or static barriers, and adjust their parameters such as binding time, unbound time, and/or the occupancy. You can find the Python script for this simulation in the script/simulations directory.
 
 2. Run the coarse-grained molecular dynamics simulations to model loop extrusion. 
 
