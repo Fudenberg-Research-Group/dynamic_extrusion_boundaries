@@ -4,9 +4,9 @@ import h5py
 import time
 import sys
 
-from lattice_translocators import LEFTranslocator, LEFTranslocatorDynamicBoundary
+from lattice_translocators import LEFTranslocator, LEFTranslocatorDynamicBoundary #import from ./engines
 
-import funcs
+import funcs #import from ./utils
 
 
 
@@ -68,7 +68,7 @@ typedict = {'A': 0}
 monomer_types = np.zeros(monomers_per_replica, dtype=int)
 site_types = np.repeat(monomer_types, sites_per_monomer)
 
-# Create some CTCF boundary sites
+# Create CTCF boundary sites
 CTCF_sites_right = np.array([284, 302, 867, 1005, 2185, 2526, 3760, 3945, 4530, 4986, 5570, 6041, 6183, 6621, 6752, 8084, 9752])
 CTCF_sites_left = np.array([557, 2130, 2608, 2608, 2787, 2899, 3259, 3327, 3641, 3646, 4300, 4518, 5172, 5783, 7112, 7940, 8905])
 
