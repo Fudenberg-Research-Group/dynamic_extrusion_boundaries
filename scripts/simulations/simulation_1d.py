@@ -12,9 +12,7 @@ import funcs #import from ./utils
 
 
 filename = sys.argv[-1]
-
 print('file name: %s'%filename)
-
 params = [ast.literal_eval(i) for i in filename.split('folder_')[1].split('_')[1::2]]
 face, back, Clife, Cof, life, slife, birth, pause, sep, site, monomer, replica, steps, vel = params
 
