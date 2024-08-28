@@ -1,6 +1,6 @@
 # Chromatin loop extrusion with dynamic boundaries
-![Alt Text](./cartoons/output.gif)
-%![Alt Text](./cartoons/output_mult_seq_bar.gif)
+![Alt Text](./output/cartoons/output.gif)
+%![Alt Text](./output/cartoons/output_mult_seq_bar.gif)
 ### description
 This GitHub repository contains tools for simulating chromatin loop extrusion using a dynamic model of CTCF to better understand how binding of CTCF contributes to chromatin organization and regulation.
 
