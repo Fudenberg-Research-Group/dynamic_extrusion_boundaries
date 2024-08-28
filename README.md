@@ -42,7 +42,7 @@ Once the data is processed, perform analyses to quantify observable features suc
 - Vermicelli: Analysis of accumulation of extruders on axial structures.
 - P(s): contact frequency vs genomic distance
   
-The analysis scripts are provided as Jupyter notebooks in the analysis directory.
+The analysis scripts are provided as Jupyter notebooks in ./analysis directory.
 Each notebook includes detailed instructions and examples to guide you through the analysis process.
 
 
