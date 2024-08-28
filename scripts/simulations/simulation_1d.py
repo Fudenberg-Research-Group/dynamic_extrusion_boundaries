@@ -1,7 +1,4 @@
-#salloc --partition=debug --gres=gpu --mem-per-cpu=2GB --cpus-per-task=8
-
 import numpy as np
-import matplotlib.pylab as plt
 import os
 import h5py 
 import time
@@ -14,11 +11,9 @@ import funcs
 
 
 
-
-
 filename = sys.argv[-1]
 
-print('this is file name %s'%filename)
+print('file name: %s'%filename)
 
 params = [ast.literal_eval(i) for i in filename.split('folder_')[1].split('_')[1::2]]
 face, back, Clife, Cof, life, slife, birth, pause, sep, site, monomer, replica, steps, vel = params
@@ -82,7 +77,7 @@ Trajn = 100 # trajectory length in monomer
 trajectory_length = Trajn * paramdict['sites_per_monomer'] #trajectory length in lattice land
 pause_multiplier = 1/(1-pause)
 trajectory_length = trajectory_length * pause_multiplier
-num_dummy_steps = trajectory_length // 5 #dummy steps in lattice land
+num_dummy_steps = int(trajectory_length // 5) #dummy steps in lattice land for loops equilibration
 blocksteps = 5 
 bins = np.linspace(0, trajectory_length, blocksteps, dtype=int)
 N = (paramdict['monomers_per_replica']*paramdict['number_of_replica'])
@@ -125,7 +120,7 @@ with h5py.File(folder+"/LEFPositions.h5", mode = 'w') as myfile:
                                      dtype = np.bool, 
                                      compression = "gzip")
 
-    translocator.steps(0)
+    translocator.steps(num_dummy_steps)
     
     for st, end in zip(bins[:-1], bins[1:]):
         loop_positions = []
