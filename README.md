@@ -26,7 +26,7 @@ Before running the full molecular dynamics simulations, implement loops on a one
 2. Run the coarse-grained molecular dynamics simulations to model loop extrusion. 
 
 #### processing simulation data
-After running the simulations, process the simulated trajectory data to generate virtual ChIP-seq profiles, contact maps, and images. The scripts for data processing are available in the script/processing directory. For any processing code the instruction is added to the relevant python code.
+After running the simulations, process the simulated trajectory data to generate virtual ChIP-seq profiles, contact maps, and images. The scripts for data processing are available in the ./script/processing directory. For any processing code the instruction is added to the relevant python code.
 ##### example 
 To generate contact maps: 
 '''
