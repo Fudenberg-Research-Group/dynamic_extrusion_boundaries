@@ -25,7 +25,7 @@ def get_requirements(path):
 install_requires = get_requirements("requirements.txt")
 
 setup(
-    name="dynamic-barrier-extrusion",
+    name="dynamic-extrusion-boundaries",
     version=VERSION,
     description=DESCRIPTION,
     url="https://github.com/Fudenberg-Research-Group/dynamic_extrusion_boundaries",
