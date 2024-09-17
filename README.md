@@ -17,6 +17,11 @@ The structure of this repository follows as below:
 - Openmm: A library for molecular simulations. (https://github.com/openmm/openmm)
 - Open2c analysis packages. (https://github.com/open2c)
 
+  
+## Installation
+```
+pip install -e .
+```
 
 ### usage
 #### running simulaitons 
