@@ -1,6 +1,11 @@
 # Chromatin loop extrusion with dynamic boundaries
 
-![Alt Text](./output/cartoons/cropped_output_mult_seq_bar_combination_size.gif)
+![Alt Text](./output/cartoons/output_mult_seq_bar_combination.gif)
+**Illustration**: This gif demonstrates how long-lived extruders can sequentially bypass a series of dynamic barriers. The process equalizes contact frequencies between a long-lived barrier acting as an anchor (left site, red) and multiple downstream dynamic barrier positions (right three sites, red).
+
+- **Left**: Lattice implementation where CTCF sites are bound with their binding time shown, and unbound thereafter. The extruder’s position at the previous time step is depicted as a light arch. If a barrier becomes unbound, an extruder blocked at this site can continue extruding. Note that CTCF can re-bind when the barrier is inside of an extruded loop.
+- **Right**: The consequence in 3D genome organization.
+
 ### description
 This GitHub repository contains tools for simulating chromatin loop extrusion using a dynamic model of CTCF to better understand how binding of CTCF contributes to chromatin organization and regulation.
 
