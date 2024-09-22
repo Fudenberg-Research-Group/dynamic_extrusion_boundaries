@@ -6,15 +6,17 @@
 - **Left**: Lattice implementation where CTCF sites are bound with their binding time, and unbound thereafter. The extruder’s position at the previous time step is depicted as a light arch. If a barrier becomes unbound, an extruder blocked at this site can continue extruding. Note that CTCF can re-bind when the barrier is inside of an extruded loop.
 - **Right**: The consequence in 3D genome organization.
 
-### description
-This GitHub repository contains tools for simulating chromatin loop extrusion using a dynamic model of CTCF to better understand how binding of CTCF contributes to chromatin organization and regulation.
+### Description
+This GitHub repository contains tools for simulating chromatin loop extrusion using a dynamic model of CTCF.
 
-### structure of the repository
+Preprint available here: ** link coming soon **
+
+### Structure of the repository
 The structure of this repository follows as below:
-- inputs : this contains simulations and experimental data.
-- output : this contain files after processing and analyzing the input data.
-- analysis: this contains the notebooks and codes for analyzing simulations and experimenal data.
-- script: this contains files required for performing simulations.
+- inputs : simulated and experimental data.
+- output : files after processing and analyzing the input data.
+- analysis: notebooks and code for analyzing simulations and experimental data.
+- script: codes for performing simulations.
   
 ### requirement
 - Python\Python libraries
