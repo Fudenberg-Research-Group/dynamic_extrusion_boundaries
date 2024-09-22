@@ -40,9 +40,9 @@ See ./scripts/simulations for relevant code.
 After running the simulations, the simulated trajectories can be processed to generate in silico ChIP-seq profiles, contact maps, and microscopy images. The scripts for data processing are available in the `./scripts/processing`. Instructions are provided with the relevant python code.
 ##### example 
 To generate contact maps: 
-'''
+
 'python script/processing/generate_maps.py'
-'''
+
 
 #### analysis
 Once the data is processed, perform analyses to quantify observable features such as:
