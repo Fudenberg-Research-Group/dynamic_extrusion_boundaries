@@ -18,11 +18,10 @@ The structure of this repository follows as below:
 - analysis: notebooks and code for analyzing simulations and experimental data.
 - script: codes for performing simulations.
   
-### requirement
-- Python\Python libraries
+### Requirements
 - Polychrom: A toolkit for polymer simulations. (https://github.com/open2c/polychrom)
-- Openmm: A library for molecular simulations. (https://github.com/openmm/openmm)
-- Open2c analysis packages. (https://github.com/open2c)
+- OpenMM: A library for molecular simulations. (https://github.com/openmm/openmm)
+- Open2C analysis packages. (https://github.com/open2c)
 
   
 ## Installation
