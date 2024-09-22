@@ -36,12 +36,12 @@ See ./scripts/simulations for relevant code.
 
 2. Run the coarse-grained molecular dynamics simulations to model loop extrusion. Uses extruder positions from 1D lattice simulations as an input. 
 
-#### processing simulation data
-After running the simulations, process the simulated trajectory data to generate virtual ChIP-seq profiles, contact maps, and images. The scripts for data processing are available in the ./script/processing directory. For any processing code the instruction is added to the relevant python code.
+#### Processing simulation data
+After running the simulations, the simulated trajectories can be processed to generate in silico ChIP-seq profiles, contact maps, and microscopy images. The scripts for data processing are available in the `./scripts/processing`. Instructions are provided with the relevant python code.
 ##### example 
 To generate contact maps: 
 '''
-python script/processing/generate_maps.py
+'python script/processing/generate_maps.py'
 '''
 
 #### analysis
