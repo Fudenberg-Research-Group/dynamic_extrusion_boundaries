@@ -26,7 +26,7 @@ The structure of this repository follows as below:
   
 ## Installation
 ```
-'pip install -e .
+'pip install -e .'
 ```
 
 ### usage
