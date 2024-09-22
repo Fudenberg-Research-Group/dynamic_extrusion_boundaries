@@ -1,3 +1,14 @@
 numpy
 matplotlib
 scipy
+pandas
+glob
+sys
+h5py 
+os
+sys
+ warnings
+ast
+cooltools
+seaborn
+polychrom
