@@ -34,7 +34,7 @@ The structure of this repository follows as below:
 See ./scripts/simulations for relevant code. 
 1. One-Dimensional Lattice Simulation: Parameters such as the lifetime, velocity, and density of extruders can be adjusted in the configuration file located at script/simulations/config/simulation_params.py. Barriers can be specified as either dynamic or static barriers, and adjust their parameters such as binding time, unbound time, and/or the occupancy. 
 
-2. Run the coarse-grained molecular dynamics simulations to model loop extrusion. 
+2. Run the coarse-grained molecular dynamics simulations to model loop extrusion. Uses extruder positions from 1D lattice simulations as an input. 
 
 #### processing simulation data
 After running the simulations, process the simulated trajectory data to generate virtual ChIP-seq profiles, contact maps, and images. The scripts for data processing are available in the ./script/processing directory. For any processing code the instruction is added to the relevant python code.
