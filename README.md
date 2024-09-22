@@ -40,21 +40,20 @@ See ./scripts/simulations for relevant code.
 After running the simulations, the simulated trajectories can be processed to generate in silico ChIP-seq profiles, contact maps, and microscopy images. The scripts for data processing are available in the `./scripts/processing`. Instructions are provided with the relevant python code.
 ##### example 
 To generate contact maps: 
-
+```
 'python script/processing/generate_maps.py'
-
+```
 
 #### analysis
-Once the data is processed, perform analyses to quantify observable features such as:
+Once the data is processed, observable features can be quantified, including:
 
 - FRiP (Fraction of Reads in Peaks)
 - TADs (Topologically Associating Domains)
 - Dots (loops between barriers)
-- Vermicelli: Analysis of accumulation of extruders on axial structures.
+- Vermicelli (accumulation of extruders on axial structures)
 - P(s): contact frequency vs genomic distance
   
-The analysis scripts are provided as Jupyter notebooks in ./analysis directory.
-Each notebook includes detailed instructions and examples to guide you through the analysis process.
+The analysis scripts are provided as Jupyter notebooks in  the ./analysis directory. 
 
 
 
