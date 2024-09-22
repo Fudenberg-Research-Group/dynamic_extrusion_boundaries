@@ -12,3 +12,4 @@ ast
 cooltools
 seaborn
 polychrom
+cooler
