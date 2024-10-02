@@ -12,19 +12,19 @@ import funcs #import from ./utils
 
 
 filename = sys.argv[-1]
-print('file name: %s'%filename)
 params = [ast.literal_eval(i) for i in filename.split('folder_')[1].split('_')[1::2]]
 face, back, Clife, Cof, life, slife, birth, pause, sep, site, monomer, replica, steps, vel = params
 
-paramdict={
-            'CTCF_facestall':[face],
-            'CTCF_backstall':[back],
-            'CTCF_lifetime':[Clife],
-            'CTCF_offtime':[Cof],
-            'LEF_lifetime':[life],
-            'LEF_stalled_lifetime':[slife],
-            'LEF_birth':[birth],
-            'LEF_pause':[pause],
+paramdict = {
+            'CTCF_facestall':[face//5, face],
+            'CTCF_backstall':[back, back],
+            'CTCF_lifetime':[clife, clife],
+            'CTCF_offtime':[cof//5, cof],
+            'LEF_lifetime':[life//5, life],
+            'LEF_stalled_lifetime':[slife, slife],
+            'LEF_birth':[birth//5, birth],
+            'deltactcf':deltactcf,
+            'LEF_pause':[pause, pause],
             'LEF_separation':sep,
             'sites_per_monomer':site,
             'monomers_per_replica':monomer,
@@ -33,7 +33,7 @@ paramdict={
             'velocity_multiplier':vel
             }
 
-paramdict_keys={
+paramdict_keys = {
                 'CTCF_facestall':'face',
                 'CTCF_backstall':'back',
                 'CTCF_lifetime':'Clife',
@@ -62,9 +62,14 @@ monomers_per_replica = paramdict['monomers_per_replica']
 sites_per_monomer = paramdict['sites_per_monomer']
 sites_per_replica = monomers_per_replica * sites_per_monomer
 
-typedict = {'A': 0}
+
 monomer_types = np.zeros(monomers_per_replica, dtype=int)
 site_types = np.repeat(monomer_types, sites_per_monomer)
+
+# It is possible to make strong and weak CTCF regions
+typedict = {'strong_CTCF':1, 'weak_CTCF':0}
+site_types[:sites_per_replica//3] = typedict['strong_CTCF']
+site_types[sites_per_replica//3] = typedict['weak_CTCF']
 
 # Create CTCF boundary sites
 CTCF_sites_right = np.array([284, 302, 867, 1005, 2185, 2526, 3760, 3945, 4530, 4986, 5570, 6041, 6183, 6621, 6752, 8084, 9752])
