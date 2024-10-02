@@ -25,6 +25,12 @@ The structure of this repository follows as below:
 
   
 ## Installation
+First, 
+
+```
+git clone https://github.com/Fudenberg-Research-Group/dynamic_extrusion_boundaries.git
+```
+then, after navigating to the folder:
 ```
 'pip install -e .'
 ```

@@ -9,8 +9,8 @@ Isolation,Bonev_2017,1.12
 Isolation,Liu_2020,WT,1.14
 Isolation,Liu_2020,Wapl_6h
 Dot,Bonev_2017,WT,1.0198
-Dot,Liu_2020,WT1.031
-Dot,Liu_2020,Wapl_6h
+Dot,Liu_2020,WT,1.031
+Dot,Liu_2020,Wapl_6h,
 
 
 
