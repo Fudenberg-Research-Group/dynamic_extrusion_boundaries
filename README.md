@@ -30,9 +30,9 @@ First,
 ```
 git clone https://github.com/Fudenberg-Research-Group/dynamic_extrusion_boundaries.git
 ```
-then, after navigating to the folder:
+after navigating to the folder:
 ```
-'pip install -e .'
+pip install -e .
 ```
 
 ### Workflow
