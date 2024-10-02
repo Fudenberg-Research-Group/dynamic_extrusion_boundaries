@@ -38,7 +38,7 @@ pip install -e .
 ### Workflow
 #### Running simulations 
 See ./scripts/simulations for relevant code. 
-1. One-Dimensional Lattice Simulation: Parameters such as the lifetime, velocity, and density of extruders can be adjusted in the configuration file located at script/simulations/simulation_1d.py. Barriers can be specified as either dynamic or static barriers, and adjust their parameters such as binding time, unbound time, and/or the occupancy. 
+1. One-Dimensional Lattice Simulation: Parameters such as the lifetime, velocity, and density of extruders can be adjusted in the configuration file located at `script/simulations/simulation_1d.py`. Barriers can be specified as either dynamic or static barriers, and adjust their parameters such as binding time, unbound time, and/or the occupancy. 
 
 2. Run the coarse-grained molecular dynamics simulations to model loop extrusion. Uses extruder positions from 1D lattice simulations as an input. 
 
