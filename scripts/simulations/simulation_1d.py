@@ -70,13 +70,13 @@ typedict = {'strong_CTCF':1, 'weak_CTCF':0}
 site_types[:sites_per_replica//3] = typedict['strong_CTCF']
 site_types[sites_per_replica//3] = typedict['weak_CTCF']
 
-# Create CTCF boundary sites
+# Create CTCF boundary sites, starting from the first lattice site
 CTCF_sites_right = np.array([284, 302, 867, 1005, 2185, 2526, 3760, 3945, 4530, 4986, 5570, 6041, 6183, 6621, 6752, 8084, 9752])
 CTCF_sites_left = np.array([557, 2130, 2608, 2608, 2787, 2899, 3259, 3327, 3641, 3646, 4300, 4518, 5172, 5783, 7112, 7940, 8905])
 
 ########### 1d simulation parameters for lattice ###########
-Trajn = 100 # trajectory length in monomer 
-trajectory_length = Trajn * paramdict['sites_per_monomer'] #trajectory length in lattice land
+Trajn = 100 # simulation trajectory length in monomer 
+trajectory_length = Trajn * paramdict['sites_per_monomer'] #simulation trajectory length in lattice land
 pause_multiplier = 1/(1-pause)
 trajectory_length = trajectory_length * pause_multiplier
 num_dummy_steps = int(trajectory_length // 5) #dummy steps in lattice land for loops equilibration
