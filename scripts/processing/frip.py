@@ -30,9 +30,9 @@ for fname  in glob.glob(directory+'folder*'):
 path_dict = dict(sorted(path_dict.items()))
 
 
-ctcfrightlist = [314, 579, 1195, 3717, 3772, 3921, 4451, 5193, 5723, 6302, 6574, 6779, 7000, 9232, 9310, 9861]
-ctcfleftlist = [495, 865, 1404, 2164, 3143, 3615, 3971, 4069, 4480, 4938, 5300, 5587, 6401, 7725, 8764, 9619]
-lst = np.array(ctcfrightlist + ctcfleftlist)
+CTCF_sites_right = [314, 579, 1195, 3717, 3772, 3921, 4451, 5193, 5723, 6302, 6574, 6779, 7000, 9232, 9310, 9861]
+CTCF_sites_left = [495, 865, 1404, 2164, 3143, 3615, 3971, 4069, 4480, 4938, 5300, 5587, 6401, 7725, 8764, 9619]
+lst = np.array(CTCF_sites_right + CTCF_sites_left)
 
 
 ### list of boundary elements on all replications
