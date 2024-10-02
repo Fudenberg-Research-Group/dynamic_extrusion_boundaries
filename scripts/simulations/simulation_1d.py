@@ -16,21 +16,20 @@ params = [ast.literal_eval(i) for i in filename.split('folder_')[1].split('_')[1
 face, back, Clife, Cof, life, slife, birth, pause, sep, site, monomer, replica, steps, vel = params
 
 paramdict = {
-            'CTCF_facestall':[face//5, face],
-            'CTCF_backstall':[back, back],
-            'CTCF_lifetime':[clife, clife],
-            'CTCF_offtime':[cof//5, cof],
-            'LEF_lifetime':[life//5, life],
-            'LEF_stalled_lifetime':[slife, slife],
-            'LEF_birth':[birth//5, birth],
-            'deltactcf':deltactcf,
-            'LEF_pause':[pause, pause],
-            'LEF_separation':sep,
-            'sites_per_monomer':site,
-            'monomers_per_replica':monomer,
-            'number_of_replica':replica,
-            'steps':steps,
-            'velocity_multiplier':vel
+            'CTCF_facestall':[face//5, face], #CTCF stalling probability when extruder encounter convergently
+            'CTCF_backstall':[back, back], #CTCF stalling probability when extruder encounter divergently
+            'CTCF_lifetime':[clife, clife], #bound time of CTCF
+            'CTCF_offtime':[cof//5, cof], #unbinding time of CTCF
+            'LEF_lifetime':[life//5, life], #lifetime of extruder in active mode 
+            'LEF_stalled_lifetime':[slife, slife], #lifetime of extruder when encountered a CTCF 
+            'LEF_birth':[birth//5, birth], #probability of extruder loading on chromatin
+            'LEF_pause':[pause, pause], #pausing rate, or the probability of extruder to have outward step at each lattice update
+            'LEF_separation':sep, #average separation between extruders, inversely related to its density on chromatin
+            'sites_per_monomer':site,#number of lattice site on each monomer
+            'monomers_per_replica':monomer, #total number of monomers at each replica
+            'number_of_replica':replica,#total number of replica
+            'steps':steps, #3d to 1d steps
+            'velocity_multiplier':vel #step rate of extruders
             }
 
 paramdict_keys = {
