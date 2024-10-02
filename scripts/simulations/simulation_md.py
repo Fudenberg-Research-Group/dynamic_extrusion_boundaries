@@ -1,7 +1,6 @@
 #salloc --partition=debug --gres=gpu --mem-per-cpu=2GB --cpus-per-task=8
 
 import numpy as np
-import matplotlib.pylab as plt
 import os
 import h5py 
 import time
@@ -21,7 +20,6 @@ from polychrom.simulation import Simulation
 from polychrom.starting_conformations import grow_cubic
 from polychrom.hdf5_format import HDF5Reporter, list_URIs, load_URI, load_hdf5_file
 from polychrom.lib.extrusion import  bondUpdater
-import polychrom.contactmaps
 import warnings
 import ast
 
