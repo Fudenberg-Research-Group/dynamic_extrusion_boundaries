@@ -126,8 +126,8 @@ with h5py.File(folder+"/LEFPositions.h5", mode = 'w') as myfile:
 
             loop_positions.append(translocator.LEFs.copy())
 
-            ctcf_positions_right = (translocator.stallProbRight)[CTCF_sites_right]*1
-            ctcf_positions_left = (translocator.stallProbLeft)[CTCF_sites_left]*1
+            ctcf_positions_right = (translocator.stallProbRight)[CTCF_sites_right]
+            ctcf_positions_left = (translocator.stallProbLeft)[CTCF_sites_left]
             ctcf_right_cur.append(ctcf_positions_right.reshape(len(ctcf_positions_right),1))
             ctcf_left_cur.append(ctcf_positions_left.reshape(len(ctcf_positions_left),1))
 
