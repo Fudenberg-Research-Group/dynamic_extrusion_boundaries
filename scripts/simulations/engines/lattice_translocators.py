@@ -175,8 +175,8 @@ class LEFTranslocatorDynamicBoundary(LEFTranslocator):
 
     def ctcf_birth(self):
     
-        rngLeft = np.random.random(self.numSite) < self.ctcfBirthProb
-        rngRight = np.random.random(self.numSite) < self.ctcfBirthProb
+        rngLeft = np.random.random(self.numSite) < self.ctcfBirthProb # random values with probability determined by ctcfBirthProb
+        rngRight = np.random.random(self.numSite) < self.ctcfBirthProb 
 
         idsLeft = np.flatnonzero(rngLeft * (self.CTCFStateLeft == 0))
         idsRight = np.flatnonzero(rngRight * (self.CTCFStateRight == 0))
