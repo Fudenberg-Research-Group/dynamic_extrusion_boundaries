@@ -6,7 +6,7 @@ def make_site_array(site_types,
                     values, 
                     at_ids=None, 
                     number_of_replica=1, 
-                    **kwargs):
+                    **kwargs): # kwargs expected to include 'paramdict'
     
     assert site_types.max() < len(values), ('Number of values (%d) incompatible with number of site types (%d)'
                                             % (len(values), site_types.max()))
@@ -47,7 +47,7 @@ def make_CTCF_dynamic_arrays(site_types,
                              CTCF_offtime,
                              sites_per_monomer,
                              velocity_multiplier,
-                             **kwargs):
+                             **kwargs): # kwargs expected to include 'paramdict'
     
     CTCF_lifetime_array = make_site_array(site_types, CTCF_lifetime, **kwargs)
     CTCF_offtime_array = make_site_array(site_types, CTCF_offtime, **kwargs)
@@ -65,7 +65,7 @@ def make_LEF_arrays(site_types,
                     LEF_pause,
                     sites_per_monomer,
                     velocity_multiplier,
-                    **kwargs):
+                    **kwargs): # kwargs expected to include 'paramdict'
     
     lifetime_array = make_site_array(site_types, LEF_lifetime, **kwargs)
     stalled_lifetime_array = make_site_array(site_types, LEF_stalled_lifetime, **kwargs)
@@ -82,7 +82,7 @@ def make_translocator(extrusion_engine,
                       site_types,
                       CTCF_left_positions,
                       CTCF_right_positions,
-                      **kwargs):
+                      **kwargs): # kwargs expected to include 'paramdict'
 
     LEF_separation = kwargs['LEF_separation']    
     velocity_multiplier = kwargs['velocity_multiplier'] 

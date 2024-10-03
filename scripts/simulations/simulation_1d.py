@@ -64,8 +64,8 @@ sites_per_replica = monomers_per_replica * sites_per_monomer
 site_types = np.zeros( monomers_per_replica * sites_per_monomer, dtype=int)
 
 # Create CTCF boundary sites, starting from the first lattice site
-CTCF_sites_right = np.array([284, 302, 867, 1005, 2185, 2526, 3760, 3945, 4530, 4986, 5570, 6041, 6183, 6621, 6752, 8084, 9752])
-CTCF_sites_left = np.array([557, 2130, 2608, 2608, 2787, 2899, 3259, 3327, 3641, 3646, 4300, 4518, 5172, 5783, 7112, 7940, 8905])
+CTCF_sites_right = np.array([284, 302, 867, 1005, 2185, 2526, 3760, 3945, 4530, 4986, 5570, 6041, 6183, 6621, 6752, 8084, 9752]) #CTCF_sites_right is rightward oriented sites
+CTCF_sites_left = np.array([557, 2130, 2608, 2608, 2787, 2899, 3259, 3327, 3641, 3646, 4300, 4518, 5172, 5783, 7112, 7940, 8905]) #CTCF_sites_right is rightward oriented sites
 
 ########### 1d simulation parameters for lattice ###########
 Trajn = 100 # simulation trajectory length in monomer 
