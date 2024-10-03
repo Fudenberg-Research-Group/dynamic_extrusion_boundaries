@@ -16,14 +16,14 @@ params = [ast.literal_eval(i) for i in filename.split('folder_')[1].split('_')[1
 face, back, Clife, Cof, life, slife, birth, pause, sep, site, monomer, replica, steps, vel = params
 
 paramdict = {
-            'CTCF_facestall':[face//5, face], #CTCF stalling probability when extruder encounter convergently
-            'CTCF_backstall':[back, back], #CTCF stalling probability when extruder encounter divergently
-            'CTCF_lifetime':[clife, clife], #bound time of CTCF
-            'CTCF_offtime':[cof//5, cof], #unbinding time of CTCF
-            'LEF_lifetime':[life//5, life], #lifetime of extruder in active mode 
-            'LEF_stalled_lifetime':[slife, slife], #lifetime of extruder when encountered a CTCF 
-            'LEF_birth':[birth//5, birth], #probability of extruder loading on chromatin
-            'LEF_pause':[pause, pause], #pausing rate, or the probability of extruder to have outward step at each lattice update
+            'CTCF_facestall':[face], #CTCF stalling probability when extruder encounter convergently
+            'CTCF_backstall':[back], #CTCF stalling probability when extruder encounter divergently
+            'CTCF_lifetime':[clife], #bound time of CTCF
+            'CTCF_offtime':[cof], #unbinding time of CTCF
+            'LEF_lifetime':[life], #lifetime of extruder in active mode 
+            'LEF_stalled_lifetime':[slife], #lifetime of extruder when encountered a CTCF 
+            'LEF_birth':[birth], #probability of extruder loading on chromatin
+            'LEF_pause':[pause], #pausing rate, or the probability of extruder to have outward step at each lattice update
             'LEF_separation':sep, #average separation between extruders, inversely related to its density on chromatin
             'sites_per_monomer':site,#number of lattice site on each monomer
             'monomers_per_replica':monomer, #total number of monomers at each replica
@@ -61,14 +61,7 @@ monomers_per_replica = paramdict['monomers_per_replica']
 sites_per_monomer = paramdict['sites_per_monomer']
 sites_per_replica = monomers_per_replica * sites_per_monomer
 
-
-monomer_types = np.zeros(monomers_per_replica, dtype=int)
-site_types = np.repeat(monomer_types, sites_per_monomer)
-
-# It is possible to make strong and weak CTCF regions
-typedict = {'strong_CTCF':1, 'weak_CTCF':0}
-site_types[:sites_per_replica//3] = typedict['strong_CTCF']
-site_types[sites_per_replica//3] = typedict['weak_CTCF']
+site_types = np.zeros( monomers_per_replica * sites_per_monomer, dtype=int)
 
 # Create CTCF boundary sites, starting from the first lattice site
 CTCF_sites_right = np.array([284, 302, 867, 1005, 2185, 2526, 3760, 3945, 4530, 4986, 5570, 6041, 6183, 6621, 6752, 8084, 9752])
