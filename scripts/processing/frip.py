@@ -1,4 +1,4 @@
-import pickle
+import glob
 import os
 import time
 import numpy as np
@@ -7,23 +7,16 @@ import ast
 
 import cooltools
 import cooltools.lib.plotting
-#import functions
-
-import shutil
 
 import pandas as pd
 import warnings
 import h5py 
-import glob
-
-#from scorefunctions import *
-import matplotlib.pyplot as plt
 import sys
 
 
 path_dict = {}
 
-directory='/project/fudenber_735/polychrom/Dynamic_boundary_model/1d_sims_dynamic_boundary/dynamical_boundary_simulations/sims/'
+directory='./inputs/sims/'
 
 for fname  in glob.glob(directory+'folder*'):
     path_dict[fname.split('sims/')[1][:]]= fname
@@ -42,26 +35,13 @@ mon = 1000
 site = 10
 lst_t = []
 for i in range(rep):
-    lst_t += list(np.array(lst)+i*mon*site)
-#print(lst_t)
+    lst_t += list(np.array(lst)+ i * mon * site)
 
-
-def peak_positions(boundary_lst_t, window_sizes=[1]):
-    peak_monomers = np.array([])
-    for i in window_sizes:
-        inds_to_add=[boundary_lst_t[j]+i for j in range(len(boundary_lst_t))]
-        peak_monomers = np.hstack((peak_monomers,inds_to_add))
-    return peak_monomers.astype(int)
 
 def FRiP(num_sites_t, lef_positions, peak_positions ):
     
     hist,edges = np.histogram(  lef_positions  , np.arange(num_sites_t+1) )
     return np.sum(hist[peak_positions] )/len(lef_positions)
-
-
-
-
-
 
 def peak_positions(boundary_list, window_sizes=[1]):
     """
@@ -95,7 +75,6 @@ for name in list(path_dict.keys())[:]:
 
     i += 1
     mapN=mon*site
-    #print(np.round(cof,4))
     lefs = h5py.File(path_dict[name]+'/LEFPositions.h5','r')["positions"]
 
     lef_lefts = lefs[min_time:,:,0].flatten()
@@ -105,8 +84,6 @@ for name in list(path_dict.keys())[:]:
 
     peak_monomers = peak_positions(lst_t,window_sizes=np.arange(-window_size,(window_size)+1) )
     frip = FRiP(mapN * rep, lef_positions, peak_monomers)
-
     score = FRiP(mapN * rep, lef_positions, peak_monomers)
-    #print(score)
     file.write('%s,%s,%s,%s,%s,%s\n'%(life, vel, clife, cof, sep, score))
 file.close()
