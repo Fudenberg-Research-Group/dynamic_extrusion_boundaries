@@ -129,95 +129,91 @@ class LEFTranslocator:
 
 
 class LEFTranslocatorDynamicBoundary(LEFTranslocator):
-     
-    def __init__(self,
-                 numLEF,
-                 birthArray,
-                 deathProb,
-                 stalledDeathProb,
-                 pauseProb,
-                 stallProbLeft,
-                 stallProbRight,
-                 ctcfBirthProb,
-                 ctcfDeathProb,
-                 *args):
-        
-        super().__init__(numLEF,
-                         birthArray,
-                         deathProb,
-                         stalledDeathProb,
-                         pauseProb,
-                         stallProbLeft,
-                         stallProbRight)
-                         
-        self.ctcfBirthProb = ctcfBirthProb
+    
+    def __init__(
+        self,
+        numLEF,
+        deathProb,
+        stalledDeathProb,
+        birthArray,
+        pauseProb,
+        stallProbLeft,
+        stallProbRight,
+        ctcfDeathProb,
+        ctcfBirthProb,
+        *args,
+        initalize_at_equilibrium_occupancy=True ,
+    ):
         self.ctcfDeathProb = ctcfDeathProb
-            
-        occupancy = ctcfBirthProb / (ctcfBirthProb + ctcfDeathProb)
+        self.ctcfBirthProb = ctcfBirthProb
 
-        # CTCF state equals -1 if site is non-CTCF, 0 if CTCF unbound, 1 if bound
-        self.CTCFStateLeft = stallProbLeft > 0
-        self.CTCFStateRight = stallProbRight > 0
-        
-        rngLeft = np.random.random(self.numSite) < occupancy
-        rngRight = np.random.random(self.numSite) < occupancy
-        
-        self.CTCFStateLeft = np.where(self.CTCFStateLeft,
-                                        self.CTCFStateLeft*rngLeft,
-                                        -1)
-        self.CTCFStateRight = np.where(self.CTCFStateRight,
-                                         self.CTCFStateRight*rngRight,
-                                         -1)
+        self.stallProbLeft_init = np.copy(stallProbLeft)
+        self.stallProbRight_init = np.copy(stallProbRight)
 
-        self.stallProbLeft = (self.CTCFStateLeft == 1)
-        self.stallProbRight = (self.CTCFStateRight == 1)
-                         
+        super().__init__(
+            numLEF,
+            deathProb,
+            stalledDeathProb,
+            birthArray,
+            pauseProb,
+            stallProbLeft,
+            stallProbRight,
+        )
 
-    def ctcf_birth(self):
-    
-        rngLeft = np.random.random(self.numSite) < self.ctcfBirthProb # random values with probability determined by ctcfBirthProb
-        rngRight = np.random.random(self.numSite) < self.ctcfBirthProb 
+        if initalize_at_equilibrium_occupancy:
+            equilibrium_occupancy = self.ctcfBirthProb / (
+                self.ctcfBirthProb + self.ctcfDeathProb
+            )
+            self.stallProbLeft = (
+                equilibrium_occupancy > np.random.random(size=self.numSite)
+            ) * (self.stallProbLeft_init > 0)
+            self.stallProbRight = (
+                equilibrium_occupancy > np.random.random(size=self.numSite)
+            ) * (self.stallProbRight_init > 0)
 
-        idsLeft = np.flatnonzero(rngLeft * (self.CTCFStateLeft == 0))
-        idsRight = np.flatnonzero(rngRight * (self.CTCFStateRight == 0))
-        
-        self.stallProbLeft[idsLeft] = 1
-        self.stallProbRight[idsRight] = 1
-                
-        
-    def ctcf_death(self):
+    def ctcf_death_left(self, i):
+        self.stallProbLeft[i] = 0
+        for j in range(self.numLEF):
+            if i == self.LEFs[j, 0]:
+                self.stalled[j, 0] = 0
 
-        rngLeft = np.random.random(self.numSite) < self.ctcfDeathProb
-        rngRight = np.random.random(self.numSite) < self.ctcfDeathProb
+    def ctcf_death_right(self, i):
+        self.stallProbRight[i] = 0
+        for j in range(self.numLEF):
+            if i == self.LEFs[j, 1]:
+                self.stalled[j, 1] = 0
 
-        idsLeft = np.flatnonzero(rngLeft * (self.CTCFStateLeft == 1))
-        idsRight = np.flatnonzero(rngRight * (self.CTCFStateRight == 1))
-        
-        LEFIdsLeft = np.flatnonzero(np.in1d(self.LEFs[:, 0], idsLeft))
-        LEFIdsRight = np.flatnonzero(np.in1d(self.LEFs[:, 1], idsRight))
+    def ctcf_birth_left(self, i):
+        self.stallProbLeft[i] = self.stallProbLeft_init[i]
 
-        self.stalled[LEFIdsLeft, 0] = 0
-        self.stalled[LEFIdsRight, 1] = 0
-        
-        self.stallProbLeft[idsLeft] = 0
-        self.stallProbRight[idsRight] = 0
-        
-    
-    def update_ctcf_states(self):
-        
-        self.CTCFStateLeft = np.where(self.CTCFStateLeft >= 0,
-                                        self.stallProbLeft,
-                                        -1)
-        self.CTCFStateRight = np.where(self.CTCFStateRight >= 0,
-                                         self.stallProbRight,
-                                         -1)
-                                
-                                
+    def ctcf_birth_right(self, i):
+        self.stallProbRight[i] = self.stallProbRight_init[i]
+
     def step(self):
-    
-        self.ctcf_death()
-        self.ctcf_birth()
-        
-        self.update_ctcf_states()
+        ctcf_updates_left = np.random.random(size=self.numSite)
+        ctcf_updates_right = np.random.random(size=self.numSite)
+        ctcf_death_left_inds = np.flatnonzero(
+            (ctcf_updates_left < self.ctcfDeathProb) * self.stallProbLeft
+        )
+        ctcf_death_right_inds = np.flatnonzero(
+            (ctcf_updates_right < self.ctcfDeathProb) * self.stallProbRight
+        )
+        ctcf_birth_left_inds = np.flatnonzero(
+            (ctcf_updates_left < self.ctcfBirthProb)
+            * (self.stallProbLeft != self.stallProbLeft_init)
+        )
+        ctcf_birth_right_inds = np.flatnonzero(
+            (ctcf_updates_right < self.ctcfBirthProb)
+            * (self.stallProbRight != self.stallProbRight_init)
+        )
+
+        for ind in ctcf_death_left_inds:
+            self.ctcf_death_left(ind)
+        for ind in ctcf_death_right_inds:
+            self.ctcf_death_right(ind)
+        for ind in ctcf_birth_left_inds:
+            self.ctcf_birth_left(ind)
+        for ind in ctcf_birth_right_inds:
+            self.ctcf_birth_right(ind)
 
         super().step()
