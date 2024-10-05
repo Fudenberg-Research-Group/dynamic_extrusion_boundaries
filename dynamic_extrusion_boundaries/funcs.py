@@ -1,4 +1,4 @@
-from lattice_translocators import LEFTranslocator, LEFTranslocatorDynamicBoundary
+from dynamic_extrusion_boundaries.lattice_translocators import LEFTranslocator, LEFTranslocatorDynamicBoundary
 
 import numpy as np
 
