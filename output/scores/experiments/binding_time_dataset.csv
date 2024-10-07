@@ -1,0 +1,18 @@
+paper,protein,condition,celltype,method,bound time (seconds)
+"Hansen, 2017",CTCF,WT,mESC C59,SPT,61
+"Hansen, 2017",CTCF,WT,mESC C87,SPT,63
+"Hansen, 2017",CTCF,WT,"mESC, C87 Halo-mCTCF",FRAP (11min 0.5hz),247
+"Hansen, 2017",CTCF,WT,"mESC, C87 Halo-mCTCF","FRAP (5min, 1hz)",183
+"Hansen, 2017",CTCF,WT,"mESC, C59 Halo-mCTCF",FRAP (11min 0.5hz),263
+"Hansen, 2017",CTCF,WT,"mESC, C59 Halo-mCTCF","FRAP (5min, 1hz)",197
+"Hansen, 2020",CTCF,CTCF-RBRi,mESCC59 Halo-mCTCF,FRAP (11min 0.5hz),220
+"Soochit, 2021",CTCF,WT,ESC,"FRAP (5min, 0.2hz)",140
+"Soochit, 2021",CTCF,CTCF-del8,ESC,"FRAP (5min, 0.2hz)",17
+"Soochit, 2021",CTCF,CTCF-del9,ESC,"FRAP (5min, 0.2hz)",similar to WT
+"Soochit, 2021",CTCF,CTCF-del10,ESC,"FRAP (5min, 0.2hz)",similar to WT
+"Soochit, 2021",CTCF,CTCF-del11,ESC,"FRAP (5min, 0.2hz)",similar to WT
+"Tedeschi, 2013",RAD21,WT,MEF,FRAP,1500
+"Hansen, 2017",RAD21,WT,mESC,FRAP,1320
+"Narducci, 2024",CTCF,WT,"mESC, clone A","FRAP (10.5min, 0.25hz)",700
+"Narducci, 2024",CTCF,WT,"mESC, clone D","FRAP (10.5min, 0.25hz)",600
+"Morales, 2020",RAD21,WT,MEFs,FRAP,1776
