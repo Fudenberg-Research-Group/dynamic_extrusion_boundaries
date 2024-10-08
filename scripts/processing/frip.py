@@ -39,8 +39,20 @@ for i in range(rep):
 
 
 def FRiP(num_sites_t, lef_positions, peak_positions ):
+   """
+   Calculate the Fraction of Reads in Peaks (FRiP) score.
+
+   Args:
+       num_sites_t (int): total number of genomic sites (lattice sites)
+       lef_positions (np.array): positions of loop extrusion factors legs.
+       peak_positions (np.array): Indices of positions corresponding to peaks
+
+    Returns:
+       float: The FRiP score, which is the fraction of LEF positions that fall within the peak regions.
+   
+   """
     
-    hist,edges = np.histogram(  lef_positions  , np.arange(num_sites_t+1) )
+    hist, edges = np.histogram(  lef_positions  , np.arange(num_sites_t + 1) )
     return np.sum(hist[peak_positions] )/len(lef_positions)
 
 def peak_positions(boundary_list, window_sizes=[1]):
