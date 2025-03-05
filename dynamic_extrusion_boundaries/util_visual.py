@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter
 
-def make_equipotential_lines(heatmap_data, line_values, num_line_x, num_line_y, expand_cof=1, label=None, legend=None, color='red', smooth_scale=1.5, **kwargs):
+def make_equipotential_lines(heatmap_data, line_values, num_line_x, num_line_y, expand_cof=10, label=None, legend=None, color='red', **kwargs):
     """
     Plots equipotential contour lines based on a given heatmap.
 
@@ -25,8 +25,6 @@ def make_equipotential_lines(heatmap_data, line_values, num_line_x, num_line_y, 
         Not currently used in the function.
     color : str, optional (default='red')
         Color of the contour lines.
-    smooth_scale : float, optional (default=1.5)
-        Gaussian smoothing factor applied to the heatmap before contour plotting.
     **kwargs : dict
         Additional keyword arguments passed to `plt.contour`.
 
@@ -36,8 +34,7 @@ def make_equipotential_lines(heatmap_data, line_values, num_line_x, num_line_y, 
         A reference to the plotted line if `label` is provided, otherwise None.
     """
 
-    d = zoom(heatmap_data, zoom=expand_cof, order=3)
-    expanded_d = gaussian_filter(d, sigma=smooth_scale)
+    expanded_d = zoom(heatmap_data, zoom=expand_cof, order=3)
     
     cntr1 = plt.contour(
         np.linspace(0, num_line_x, int(num_line_x * expand_cof)),
