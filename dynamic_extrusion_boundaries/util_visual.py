@@ -31,11 +31,11 @@ def make_equipotential_lines(heatmap_data, line_values, expand_cof=10, label=Non
     """
 
     expanded_d = zoom(heatmap_data, zoom=expand_cof, order=3)
-    num_line_x = heatmap_data.shape[1]
-    num_line_y = heatmap_data.shape[0]
+    heatmap_shape_x = heatmap_data.shape[1]
+    heatmap_shape_y = heatmap_data.shape[0]
     cntr1 = plt.contour(
-        np.linspace(0, num_line_x, int(num_line_x * expand_cof)),
-        np.linspace(0, num_line_y, int(num_line_y * expand_cof)),
+        np.linspace(0, heatmap_shape_x, int(heatmap_shape_x * expand_cof)),
+        np.linspace(0, heatmap_shape_y, int(heatmap_shape_y * expand_cof)),
         expanded_d, levels=line_values, colors=color, **kwargs
     )
 
