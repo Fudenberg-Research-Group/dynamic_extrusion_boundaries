@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter
 
-def make_equipotential_lines(heatmap_data, line_values, num_line_x, num_line_y, expand_cof=10, label=None, legend=None, color='red', **kwargs):
+def make_equipotential_lines(heatmap_data, line_values, expand_cof=10, label=None, legend=None, color='red', **kwargs):
     """
     Plots equipotential contour lines based on a given heatmap.
 
@@ -13,10 +13,6 @@ def make_equipotential_lines(heatmap_data, line_values, num_line_x, num_line_y, 
         A 2D numpy array representing the heatmap data.
     line_values : list
         A list of contour levels to be plotted.
-    num_line_x : int
-        Number of grid points along the x-axis.
-    num_line_y : int
-        Number of grid points along the y-axis.
     expand_cof : float, optional (default=1)
         Expansion coefficient to scale the heatmap before plotting.
     label : str, optional
@@ -35,7 +31,8 @@ def make_equipotential_lines(heatmap_data, line_values, num_line_x, num_line_y, 
     """
 
     expanded_d = zoom(heatmap_data, zoom=expand_cof, order=3)
-    
+    num_line_x = heatmap_data.shape[1]
+    num_line_y = heatmap_data.shape[0]
     cntr1 = plt.contour(
         np.linspace(0, num_line_x, int(num_line_x * expand_cof)),
         np.linspace(0, num_line_y, int(num_line_y * expand_cof)),
