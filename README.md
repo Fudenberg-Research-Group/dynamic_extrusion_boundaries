@@ -9,7 +9,8 @@
 ### Description
 This GitHub repository contains tools for simulating chromatin loop extrusion using a dynamic model of CTCF.
 
-Preprint available here: ** link coming soon **
+Preprint available here: <https://www.biorxiv.org/content/10.1101/2024.10.08.617113v1>
+
 
 ### Structure of the repository
 The structure of this repository follows as below:
