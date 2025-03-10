@@ -37,7 +37,7 @@ def make_CTCF_arrays(site_types,
     stall_right_array = make_site_array(site_types, CTCF_facestall, at_ids=CTCF_right_positions, **kwargs)
     
     stall_left_array += make_site_array(site_types, CTCF_backstall, at_ids=CTCF_right_positions, **kwargs)
-    stall_right_array += make_site_array(site_types, CTCF_backstall, at_idsids=CTCF_left_positions, **kwargs)
+    stall_right_array += make_site_array(site_types, CTCF_backstall, at_ids=CTCF_left_positions, **kwargs)
     
     return [stall_left_array, stall_right_array]
 
